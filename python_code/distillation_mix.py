@@ -14,11 +14,11 @@ import boto3
 #       getProfile outputs the distillation profile based on the name in the filepath
 #           The inputs should be treated as object and key if serveless as lamda has
 #           has S3 files avaliable
-#           Inputs: folderPath, fileName
+#           Inputs: path, name
 #           Output: dataframe of profile
 #       getDistMix outputs the distillation profile of 2 distillation profiles
 #       based on volumne and distillation profiles
-#           Inputs: profile1, Vol1 profile2, Vol2
+#           Inputs: profile1, vol1 profile2, vol2
 #           Output: a dataframe if class is on local machine and a json table if serverless
 
 class dist_mix():
@@ -27,6 +27,10 @@ class dist_mix():
     def __init__(self,serverless=True):
         pass
 
+    def getProfiles(self,path,name):
+        pass
 
+    def getDisMix(self,profile1,vol1,profile2,vol2):
+        pass
 
 
