@@ -36,11 +36,19 @@ class dist_mix():
 
         #check if running on AWS or not
         if os.environ.get("AWS_EXECUTION_ENV") is not None:
-            pass
+            ## for running on lamda
+            try:
+                s3 = boto3.client('s3')
+                resp = s3.get_object(Bucket=path,Key=name)
+                data = pd.read_csv(resp['Body'],sep=',',index_col=False)
+                return(data)
+            except Exception as err:
+                return(err)
+
         else:
             # import csv based on file name
             if name[-3:] == 'csv':
-                data = pd.read_csv(path + '/' + name)
+                data = pd.read_csv(path + '/' + name,index_col=False)
                 return(data)
             else:
                 raise ValueError ('the name must be a csv')
