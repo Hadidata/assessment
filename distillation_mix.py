@@ -4,9 +4,9 @@
 # to come up with one distillation profile
 #######################################################################
 
-from pandas import dataframes as df
+import pandas as pd
 import boto3
-
+import os
 
 # this class is used to calculate the distillation profile of a mixture
 # of 2 distillation profile.
@@ -17,20 +17,39 @@ import boto3
 #           Inputs: path, name
 #           Output: dataframe of profile
 #       getDistMix outputs the distillation profile of 2 distillation profiles
-#       based on volumne and distillation profiles
+#           based on volumne and distillation profiles
 #           Inputs: profile1, vol1 profile2, vol2
 #           Output: a dataframe if class is on local machine and a json table if serverless
 
 class dist_mix():
     # the class should behave differently when it is on Lamda
-    # compared to when it is on a local machine
-    def __init__(self,serverless=True):
-        pass
+    # compared to when it is not check to see if it is running in
+    # lamda
 
-    def getProfiles(self,path,name):
-        pass
+    def getProfile(self,path,name):
+
+        #validate inputs
+        assert isinstance(path,str) == True, "path must be a string"
+        assert len(path) > 0, "path length must be greater then 0"
+        assert isinstance(name, str) == True, "path must be a string"
+        assert len(name) > 0, "path length must be greater then 0"
+
+        #check if running on AWS or not
+        if os.environ.get("AWS_EXECUTION_ENV") is not None:
+            pass
+        else:
+            # import csv based on file name
+            if name[-3:] == 'csv':
+                data = pd.read_csv(path + '/' + name)
+                return(data)
+            else:
+                raise ValueError ('the name must be a csv')
+
 
     def getDisMix(self,profile1,vol1,profile2,vol2):
-        pass
 
+        if os.environ.get("AWS_EXECUTION_ENV") is not None:
+            pass
+        else:
+            pass
 
