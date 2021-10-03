@@ -118,24 +118,26 @@ class dist_mix():
         vol2per = float(vol2 / (vol1+vol2))
         i = 0
         for vol in profileJ:
-            if i != 0 and isfloat(vol[1]) == True and isfloat(vol[2]) == True:
+            if isfloat(vol[1]) == True and isfloat(vol[3]) == True:
                 wavg = round((vol1per * float(vol[1])) + (vol2per * float(vol[3])),2)
                 data.append([vol[0], wavg])
-            else:
+            elif i == 0:
                 data.append([vol[0],vol[1]])
+            else:
+                data.append([vol[0],"-"])
             i = i + 1
 
         if os.environ.get(getAwsEnvir()) is not None:
-            return pd.DataFrame(data)
-        else:
             return data
-
+        else:
+            output = pd.DataFrame(data[1:], columns=data[0])
+            return output
 
 
 if __name__ == '__main__':
     dist = dist_mix()
     path = 'C:\\Users\\Hadi-PC\\Desktop\\distillation profiles'
-    name1 = 'bc light.csv'
+    name1 = 'syncrude sweet premium.csv'
     name2 = 'pembina.csv'
     profile1 = dist.getProfile(path,name1)
     profile2 = dist.getProfile(path, name2)

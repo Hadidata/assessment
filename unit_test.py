@@ -92,6 +92,32 @@ class dist_test(unittest.TestCase):
             dist.getDisMix(pd.DataFrame(profile1), vol1,
                            pd.DataFrame(profile2), vol2)
 
+    # This test is to validate the weighted average calculation for distillation
+    # profile using test dataframes.
+    def test_9(self):
+
+        profile1 = {'Per': [5],
+                    'Temp': [12]}
+        profile2 = {'Per': [5],
+                    'Temp': [1]}
+
+        profile1 = pd.DataFrame(profile1)
+        profile2 = pd.DataFrame(profile2)
+        vol1 = 12
+        vol2 = 18
+
+        vol1per = vol1 / (vol1 + vol2)
+        vol2per = vol2 / (vol1 + vol2)
+
+        answer = (vol1per * profile1['Temp'][0]) + (vol2per * profile2['Temp'][0])
+
+        dist = dist_mix()
+        mOutput = dist.getDisMix(profile1, vol1,
+                       profile2, vol2)
+
+        self.assertEqual(answer,mOutput['Temp'][0],"The method is yielding the incorrect weighted average")
+        #print()
+
 
 if __name__ == '__main__':
     unittest.main()
