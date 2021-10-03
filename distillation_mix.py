@@ -11,14 +11,24 @@ def getAwsEnvir():
 
 #### Packages to import ####
 import os
+import decimal
+import numpy
 # import different lib based on if it running it is running on AWS Lamda
 # or not
 if os.environ.get(getAwsEnvir()) is not None:
-    import numpy
     import boto3
     import json
 else:
     import pandas as pd
+
+#this function checks if a value can be converted into a float or not
+# returns true or false
+def isfloat(value):
+  try:
+    float(value)
+    return True
+  except ValueError:
+    return False
 
 
 # this class is used to calculate the distillation profile of a mixture
@@ -72,11 +82,62 @@ class dist_mix():
             else:
                 raise ValueError('the name must be a csv')
 
-    # this method returns
+    # this method returns the DistMix based on the values from 2 Profiles
+    # and there respective volumes. inputs are profile1, vol1, profile2
+    # and vol2. when the function runs on Lambda inputs are 2D arrays and output
+    # is a 2D arrays
+    # running on a local machine it is dataframes and the output is a dataframe
     def getDisMix(self, profile1, vol1, profile2, vol2):
 
-        if os.environ.get("AWS_EXECUTION_ENV") is not None:
-            pass
-        else:
-            pass
+        assert isinstance(vol1, float) or isinstance(vol1, int) == True, "vol1 must be a numeric value"
+        assert isinstance(vol2, float) or isinstance(vol2, int) == True, "vol2 must be a numeric value"
 
+        # convert dataframe or array into a numpy array
+        if os.environ.get(getAwsEnvir()) is not None:
+            assert isinstance(profile1, list), "profile1 must be a list"
+            assert isinstance(profile2, list), "profile2 must be a list"
+            profile1 = numpy.array(profile1)
+            profile2 = numpy.array(profile2)
+        else:
+            assert isinstance(profile1, pd.DataFrame), "profile1 must be a dataframe"
+            assert isinstance(profile2, pd.DataFrame), "profile2 must be a dataframe"
+            profile1 = numpy.asarray([profile1.columns.values.tolist()] + profile1.values.tolist())
+            profile2 = numpy.asarray([profile2.columns.values.tolist()] + profile2.values.tolist())
+
+        #make sure the 2 arrays are the same length
+        assert len(profile1) == len(profile2), "Profile 1 len is " \
+                + str(len(profile1[1])) + " profile 2 length is " + str(len(profile2[1]))
+
+        #join the 2 arrays into one
+        profileJ = numpy.concatenate((profile1, profile2), axis=1)
+
+        #loop to calc a waited average for any numeic row in the Temperature (C) column
+        #which is always the second column
+        data = []
+        vol1per = float(vol1 / (vol1+vol2))
+        vol2per = float(vol2 / (vol1+vol2))
+        i = 0
+        for vol in profileJ:
+            if i != 0 and isfloat(vol[1]) == True and isfloat(vol[2]) == True:
+                wavg = round((vol1per * float(vol[1])) + (vol2per * float(vol[3])),2)
+                data.append([vol[0], wavg])
+            else:
+                data.append([vol[0],vol[1]])
+            i = i + 1
+
+        if os.environ.get(getAwsEnvir()) is not None:
+            return pd.DataFrame(data)
+        else:
+            return data
+
+
+
+if __name__ == '__main__':
+    dist = dist_mix()
+    path = 'C:\\Users\\Hadi-PC\\Desktop\\distillation profiles'
+    name1 = 'bc light.csv'
+    name2 = 'pembina.csv'
+    profile1 = dist.getProfile(path,name1)
+    profile2 = dist.getProfile(path, name2)
+    distMix = dist.getDisMix(profile1,10,profile2,20)
+    print(distMix)
