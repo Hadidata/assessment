@@ -5,11 +5,12 @@
 #######################################################################
 
 from distillation_mix import dist_mix
+import os
 
 #the file path where all the example distillation distributions are
 #located
 def filePath():
-    return('C:\\Users\\Hadi-PC\\Desktop\\distillation profiles')
+    return(str(os. getcwd()) + "\\" + "distillation profiles")
 
 
 # This is an example of loading in a profile based on the local
@@ -17,7 +18,7 @@ def filePath():
 def getProfile(name):
     path = filePath()
     pmix = dist_mix()
-    profile = pmix.getProfile(path,name)
+    profile = pmix.getProfile(path,name + '.csv')
     return(profile)
 
 # This is an example of the 2 methods working togeather to output
@@ -26,27 +27,32 @@ def calDistillation(proName1,vol1,proName2,vol2):
 
     path = filePath()
     pmix = dist_mix()
-    profile1 = pmix.getProfile(path,proName1)
-    profile2 = pmix.getProfile(path, proName2)
+    profile1 = pmix.getProfile(path,proName1 + '.csv')
+    profile2 = pmix.getProfile(path, proName2 + '.csv')
     Dismix = pmix.getDisMix(profile1,vol1,profile2,vol2)
     return(Dismix)
 
-if __name__ == '__main__':
-    proName1 = 'bc light.csv'
-    proName2 = 'mixed sweet blend.csv'
-
-    print("####### Example of a csv profile read: " + proName1 +" #######")
+def localRun():
+    # The following are profile that are currently avaliable
+    # bc light,mixed sweet blend,pembina, syncrude sweet premium
+    proName1 = 'bc light'
+    proName2 = 'mixed sweet blend'
+    print ("")
+    print("####### Example of a csv profile read: " + proName1 + " #######")
     print(getProfile(proName1))
 
     print("####### Example of a csv profile read: " + proName2 + " #######")
     print(getProfile(proName2))
 
-    print("####### Example of a mixture of Profile Distribution #######")
+    print("####### Example of a mixture of Profile Distribution based on weighted average #######")
     vol1 = 10
     vol2 = 20
 
-    print(calDistillation(proName1,vol1,proName2,vol2))
+    print(calDistillation(proName1, vol1, proName2, vol2))
 
+
+if __name__ == '__main__':
+    localRun()
 
 
 
