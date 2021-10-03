@@ -34,7 +34,14 @@ class dist_test(unittest.TestCase):
         with self.assertRaises(ValueError):
             dist.getProfile(path,name)
 
-
+    # This test case checks if a file path is invalid or not
+    # if it is invalid a FileNotFoundError should be raised
+    def test_4(self):
+        path = 'C:/hadi'
+        name = 'doesnt_exist.csv'
+        dist = dist_mix()
+        with self.assertRaises(FileNotFoundError):
+            dist.getProfile(path,name)
 
 if __name__ == '__main__':
     unittest.main()

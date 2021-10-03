@@ -10,10 +10,10 @@ from distillation_mix import dist_mix
 # machine file path
 def getProfile():
     path = 'C:\\Users\\Hadi-PC\\Desktop\\distillation profiles'
-    name = 'syncrude sweet premium.csv'
+    name = 'pembina.csv'
     pmix = dist_mix()
     profile = pmix.getProfile(path,name)
-
+    return(profile)
 
 if __name__ == '__main__':
     print(getProfile())
