@@ -45,7 +45,7 @@ def localRun():
     print(getProfile(proName2))
 
     print("####### Example of a mixture of Profile Distribution based on weighted average #######")
-    vol1 = 10
+    vol1 = 15
     vol2 = 20
 
     print(calDistillation(proName1, vol1, proName2, vol2))
