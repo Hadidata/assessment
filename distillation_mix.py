@@ -73,7 +73,6 @@ class dist_mix():
                 raise ValueError('the name must be a csv')
 
     # this method returns
-
     def getDisMix(self, profile1, vol1, profile2, vol2):
 
         if os.environ.get("AWS_EXECUTION_ENV") is not None:

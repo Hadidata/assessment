@@ -4,6 +4,7 @@
 
 import unittest
 from distillation_mix import dist_mix
+import pandas as pd
 # this class is used to test the dist_mix class
 class dist_test(unittest.TestCase):
 
@@ -42,6 +43,16 @@ class dist_test(unittest.TestCase):
         dist = dist_mix()
         with self.assertRaises(FileNotFoundError):
             dist.getProfile(path,name)
+
+    #Test if a dataframe is returned when a valid profile name is given
+    def test_5(self):
+        path = 'C:\\Users\\Hadi-PC\\Desktop\\distillation profiles'
+        name = 'bc light.csv'
+        dist = dist_mix()
+        profile = dist.getProfile(path, name)
+        dfCheck = isinstance(profile, pd.DataFrame)
+        self.assertEqual(dfCheck,True,"Output must be a data frame")
+
 
 if __name__ == '__main__':
     unittest.main()
