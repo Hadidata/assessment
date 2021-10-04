@@ -57,9 +57,11 @@ def localRun():
 
 # This method is a test for how to get a distillation profile
 # via the AWS Lambda function which is triggered via the
-# AWS API Gateway
+# AWS API Gateway,
+## Please note the output will be a string from Lambda as this for demo purpose only
+# in reality we should format it as a JSON output for get request
 def getProfileApi():
-
+    print('########### Lambda run Profile Distillation #################')
     parm = {'name':'pembina'}
     url = ' https://ddlt7rpw5f.execute-api.us-east-2.amazonaws.com/dev/getProfile'
     resp = req.get(url=url,params=parm)
@@ -67,21 +69,24 @@ def getProfileApi():
     print(data)
 
 def getDisMixApi():
-
+    print('########### Lambda run Profile Distillation Mix #################')
     parm = {'name1': 'pembina',
             'name2': 'bc light',
-            'vol1': 12,
+            'vol1': 10,
             "vol2": 100}
     url = 'https://ddlt7rpw5f.execute-api.us-east-2.amazonaws.com/dev/getDisMix'
     resp = req.get(url=url, params=parm)
     data = resp.json()
     print(data)
 
-if __name__ == '__main__':
-    #localRun()
-    #getProfileApi()
+# Serverless Run method
+def serverlessRun():
+    getProfileApi()
     getDisMixApi()
 
+if __name__ == '__main__':
+    localRun()
+    serverlessRun()
 
 
 
