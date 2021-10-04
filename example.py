@@ -60,16 +60,28 @@ def localRun():
 # AWS API Gateway
 def getProfileApi():
 
-    parm = {'key':'bc light.csv'}
-    url = ' https://ag26lmq5sh.execute-api.us-east-2.amazonaws.com/dev/testFunction'
+    parm = {'name':'pembina'}
+    url = ' https://ddlt7rpw5f.execute-api.us-east-2.amazonaws.com/dev/getProfile'
     resp = req.get(url=url,params=parm)
     data = resp.json()
     print(data)
 
+def getDisMixApi():
+
+    parm = {'name1': 'pembina',
+            'name2': 'bc light',
+            'vol1': 12,
+            "vol2": 100}
+    url = 'https://ddlt7rpw5f.execute-api.us-east-2.amazonaws.com/dev/getDisMix'
+    resp = req.get(url=url, params=parm)
+    data = resp.json()
+    print(data)
 
 if __name__ == '__main__':
-    getProfileApi()
     #localRun()
+    #getProfileApi()
+    getDisMixApi()
+
 
 
 
