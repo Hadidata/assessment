@@ -54,7 +54,7 @@ class dist_mix():
         # validate inputs
         assert isinstance(path, str) == True, "path must be a string"
         assert len(path) > 0, "path length must be greater then 0"
-        assert isinstance(name, str) == True, "path must be a string"
+        assert isinstance(name, str) == True, "name must be a string"
         assert len(name) > 0, "name length must be greater then 0"
 
         # check if running on AWS or not
