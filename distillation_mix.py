@@ -132,14 +132,3 @@ class dist_mix():
         else:
             output = pd.DataFrame(data[1:], columns=data[0])
             return output
-
-
-if __name__ == '__main__':
-    dist = dist_mix()
-    path = 'C:\\Users\\Hadi-PC\\Desktop\\distillation profiles'
-    name1 = 'syncrude sweet premium.csv'
-    name2 = 'pembina.csv'
-    profile1 = dist.getProfile(path,name1)
-    profile2 = dist.getProfile(path, name2)
-    distMix = dist.getDisMix(profile1,10,profile2,20)
-    print(distMix)
