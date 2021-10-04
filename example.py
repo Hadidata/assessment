@@ -6,6 +6,9 @@
 
 from distillation_mix import dist_mix
 import os
+import requests as req
+
+################ Local Machine Examples ############################
 
 #the file path where all the example distillation distributions are
 #located
@@ -50,9 +53,23 @@ def localRun():
 
     print(calDistillation(proName1, vol1, proName2, vol2))
 
+################ API Examples ############################
+
+# This method is a test for how to get a distillation profile
+# via the AWS Lambda function which is triggered via the
+# AWS API Gateway
+def getProfileApi():
+
+    parm = {'key':'bc light.csv'}
+    url = ' https://ag26lmq5sh.execute-api.us-east-2.amazonaws.com/dev/testFunction'
+    resp = req.get(url=url,params=parm)
+    data = resp.json()
+    print(data)
+
 
 if __name__ == '__main__':
-    localRun()
+    getProfileApi()
+    #localRun()
 
 
 
