@@ -132,3 +132,6 @@ class dist_mix():
         else:
             output = pd.DataFrame(data[1:], columns=data[0])
             return output
+        
+        
+        
